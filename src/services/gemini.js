@@ -87,7 +87,7 @@ export const askGeminiForJson = async (prompt) => {
             },
           },
           {
-            timeout: 90000,
+            timeout: 30000,
             headers: { "x-goog-api-key": process.env.GEMINI_API_KEY },
           },
         ));
