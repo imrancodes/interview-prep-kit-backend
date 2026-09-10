@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { createKit, deleteKit, getKit, listKits } from "../controllers/kitController.js";
+import { completePracticeQuestion, getPractice, resetPractice } from "../controllers/practiceController.js";
 import { protect } from "../middleware/authMiddleware.js";
 import { createQuestions } from "../controllers/questionController.js";
 import { createPlan } from "../controllers/planController.js";
@@ -9,5 +10,8 @@ router.use(protect);
 router.route("/").get(listKits).post(createKit);
 router.post("/:id/questions", createQuestions);
 router.post("/:id/plan", createPlan);
+router.get("/:id/practice", getPractice);
+router.post("/:id/practice/complete", completePracticeQuestion);
+router.post("/:id/practice/reset", resetPractice);
 router.route("/:id").get(getKit).delete(deleteKit);
 export default router;
