@@ -1,0 +1,5 @@
+import { askGeminiForJson } from "./gemini.js";
+
+export const generateFlashcards = (role, requirements, questions) => askGeminiForJson(`Create concise revision flashcards only from these interview requirements and questions. Return STRICT JSON only: [{"id":"f1","requirement_ids":["r1"],"front":"","back":""}]. Every card must reference a provided requirement ID. One concept per card. Each back must be under 80 words and contain no markdown.\n\nROLE: ${role.title || "Not specified"}\nREQUIREMENTS: ${JSON.stringify(requirements)}\nQUESTIONS: ${JSON.stringify(questions)}`);
+
+export const normalizeFlashcards = (cards, allowedIds) => (Array.isArray(cards) ? cards : []).map((card, index) => ({ id: `f${index + 1}`, requirement_ids: (Array.isArray(card.requirement_ids) ? card.requirement_ids : []).filter((id) => allowedIds.includes(id)), front: typeof card.front === "string" ? card.front.trim() : "", back: typeof card.back === "string" ? card.back.trim().split(/\s+/).slice(0, 80).join(" ") : "" })).filter((card) => card.front && card.back && card.requirement_ids.length);

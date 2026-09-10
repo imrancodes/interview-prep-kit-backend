@@ -44,6 +44,7 @@ export const generateKit = async (req, res, next) => {
         company: new URL(companyUrl).hostname.replace(/^www\./, ""),
         company_url: companyUrl.trim(),
         role: role.title || "",
+        interview_days: Number(days),
         jd_chars: jobDescription.length,
         researched_at: new Date(),
         pages_used: urls,
