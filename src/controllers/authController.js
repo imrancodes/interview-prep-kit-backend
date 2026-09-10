@@ -11,8 +11,8 @@ const serializeUser = (user) => ({
 const emailIsValid = (email) => /^\S+@\S+\.\S+$/.test(email);
 const cookieOptions = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
-  sameSite: "lax",
+  secure: true,
+  sameSite: "none",
   maxAge: 24 * 60 * 60 * 1000,
 };
 const authenticate = (res, user, status = 200) => {
@@ -79,8 +79,8 @@ export const getMe = (req, res) =>
 export const logout = (_req, res) => {
   res.clearCookie("prepflow_token", {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    secure: true,
+    sameSite: "none",
   });
   return res.json({ success: true, data: {} });
 };
