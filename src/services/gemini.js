@@ -9,7 +9,9 @@ const parseJson = (text) =>
   );
 const friendlyGeminiError = (error) => {
   const status = error.response?.status;
-  if (status === 400 || status === 404)
+  const providerMessage = error.response?.data?.error?.message || error.message;
+  console.error("Gemini API request failed", { status, model: process.env.GEMINI_MODEL || "gemini-3.6-flash", providerMessage, code: error.code });
+  if (status === 400)
     return Object.assign(
       new Error(
         "The AI research service is temporarily unavailable. Please try again in a moment.",
@@ -66,9 +68,6 @@ export const askGeminiForJson = async (prompt) => {
       { statusCode: 503 },
     );
   const model = process.env.GEMINI_MODEL || "gemini-3.6-flash";
-  console.log("Gemini model:", model);
-  console.log("API Key exists:", !!process.env.GEMINI_API_KEY);
-  console.log("Calling Gemini...");
   try {
     let data;
     for (let attempt = 0; attempt < 3; attempt += 1) {
