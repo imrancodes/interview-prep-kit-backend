@@ -10,7 +10,12 @@ const parseJson = (text) =>
 const friendlyGeminiError = (error) => {
   const status = error.response?.status;
   const providerMessage = error.response?.data?.error?.message || error.message;
-  console.error("Gemini API request failed", { status, model: process.env.GEMINI_MODEL || "gemini-3.6-flash", providerMessage, code: error.code });
+  console.error("Gemini API request failed", {
+    status,
+    model: process.env.GEMINI_MODEL || "gemini-3.6-flash",
+    providerMessage,
+    code: error.code,
+  });
   if (status === 400)
     return Object.assign(
       new Error(

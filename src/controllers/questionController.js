@@ -14,12 +14,10 @@ export const createQuestions = async (req, res, next) => {
         .json({ success: false, message: "Interview kit not found." });
     const requirements = kit.role?.requirements || [];
     if (!requirements.length)
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "This kit has no requirements to generate questions from.",
-        });
+      return res.status(400).json({
+        success: false,
+        message: "This kit has no requirements to generate questions from.",
+      });
     const requirementIds = requirements.map((requirement) => requirement.id);
     let questions = normalizeQuestions(
       await generateQuestions(kit.role, kit.company_brief, requirements),

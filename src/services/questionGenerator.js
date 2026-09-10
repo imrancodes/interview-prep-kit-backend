@@ -1,10 +1,8 @@
 import { askGeminiForJson } from "./gemini.js";
-
-const prompt = (role, brief, requirements) =>
-  `Generate interview questions using only the requirements below. Return STRICT JSON only as an array of objects: [{"id":"q1","requirement_ids":["r1"],"category":"technical|behavioural|system-design|company-fit","prompt":"","answer_outline":"","difficulty":1}]. Every question must reference one or more provided requirement IDs. difficulty must be 1, 2, or 3. Do not invent technologies or requirements.\n\nROLE: ${role.title || "Not specified"}\nCOMPANY BRIEF: ${brief.summary || "Not available"}\nREQUIREMENTS: ${JSON.stringify(requirements)}`;
+import { questionsPrompt } from "./prompts.js";
 
 export const generateQuestions = async (role, companyBrief, requirements) =>
-  askGeminiForJson(prompt(role, companyBrief, requirements));
+  askGeminiForJson(questionsPrompt(role, companyBrief, requirements));
 
 export const normalizeQuestions = (questions, allowedIds) =>
   (Array.isArray(questions) ? questions : [])

@@ -3,9 +3,9 @@ import Kit from "../models/Kit.js";
 const practicePayload = (kit) => {
   const questions = Array.isArray(kit.questions) ? kit.questions : [];
   const questionIds = questions.map((question) => question.id);
-  const completedIds = [...new Set(kit.practice?.completed_question_ids || [])].filter((id) =>
-    questionIds.includes(id),
-  );
+  const completedIds = [
+    ...new Set(kit.practice?.completed_question_ids || []),
+  ].filter((id) => questionIds.includes(id));
   const completedSet = new Set(completedIds);
   const unansweredIds = questionIds.filter((id) => !completedSet.has(id));
   const savedCurrent = kit.practice?.last_question_id;
@@ -53,9 +53,12 @@ export const completePracticeQuestion = async (req, res, next) => {
   try {
     const kit = await findOwnedKit(req, res);
     if (!kit) return;
-    const questionId = typeof req.body?.questionId === "string" ? req.body.questionId : "";
+    const questionId =
+      typeof req.body?.questionId === "string" ? req.body.questionId : "";
     if (!kit.questions.some((question) => question.id === questionId)) {
-      return res.status(400).json({ success: false, message: "Question not found in this kit" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Question not found in this kit" });
     }
     const completedIds = new Set(kit.practice?.completed_question_ids || []);
     completedIds.add(questionId);

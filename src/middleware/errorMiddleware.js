@@ -1,15 +1,17 @@
 export const notFound = (req, res) =>
-  res
-    .status(404)
-    .json({
-      success: false,
-      message: `Route not found: ${req.method} ${req.originalUrl}`,
-    });
+  res.status(404).json({
+    success: false,
+    message: `Route not found: ${req.method} ${req.originalUrl}`,
+  });
 
 export const errorHandler = (err, _req, res, _next) => {
   console.error(err);
   const status = err.name === "CastError" ? 404 : err.statusCode || 500;
   res
     .status(status)
-    .json({ success: false, message: err.message || "Internal server error" });
+    .json({
+      success: false,
+      message: err.message || "Internal server error",
+      code: err.code || (status === 404 ? "NOT_FOUND" : "GENERATION_FAILED"),
+    });
 };
